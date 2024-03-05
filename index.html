@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>あか(aka7774)のホームページ</title>
+  </head>
+  <body>
+    <h1>あか(aka7774)のホームページ</h1>
+    <p>ばぶー！　あかです！ 共産主義者です。うそです。オカネダイスキー！</p>
+    <p>ホームページじゃなくてWebサイトだろとかURLじゃなくてURIだろとか言う老人もようこそ。HTML2.0ダイスキー！</p>
+    <p>謎のAI企業 Huggingface のスペースを活用しましょう。</p>
+    <p><s>えっちな絵は消したので</s>高校生でも大丈夫！</p>
+    <hr />
+    <h2>🤗なんなの？🤗</h2>
+	<p><a href="https://huggingface.co/aka7774" target="_blank">https://huggingface.co/aka7774</a></p>
+	<pre>
+	git clone https://huggingface.co/spaces/aka7774/$1
+	cd $1
+	bash venv.sh
+	venv/bin/python -m uvicorn main:app
+	</pre>
+    <ul>
+      <li>app.py は gradio</li>
+      <li>main.py は fastapi uvicorn なやつ。 /docs と /gradio にアクセスできる</li>
+      <li>venv.sh でインストール</li>
+      <li>WSL2かUbuntu用 要CUDA</li>
+      <li>KISSの原則 (*´з`)</li>
+    </ul>
+    <h2>🤗どんなの？🤗</h2>
+	<p>勝手ながらAPIの仕様は自分の都合に合わせてコロコロ変えると思います。</p>
+	<p>デモは現実的な速度では応答しないし、エラーが出てまったく動かないものもある。動作テスト程度に。</p>
+    <ul>
+      <li><a href="https://huggingface.co/spaces/aka7774/llm/" target="_blank">llm</a> transformersとBitsandbytesでローカルLLM動かすシンプルなやつ。</li>
+      <li><a href="https://huggingface.co/spaces/aka7774/faiss/" target="_blank">faiss</a> ベクトル検索とドキュメントのテキスト化。Naive RAGというらしい。</li>
+      <li><a href="https://huggingface.co/spaces/aka7774/whisper/" target="_blank">whisper</a> faster-whisper==0.10.1 音声の文字おこし。</li>
+      <li><a href="https://huggingface.co/spaces/aka7774/reazonspeech/" target="_blank">reazonspeech</a> whisperよりいいらしい。</li>
+      <li><a href="https://huggingface.co/spaces/aka7774/stablediffusion/" target="_blank">stablediffusion</a> diffusersの短いコードで動く画像生成。</li>
+      <li><a href="https://huggingface.co/spaces/aka7774/katanuki/" target="_blank">katanuki</a> anime画像の背景を透過するツール。</li>
+      <li><a href="https://huggingface.co/spaces/aka7774/ddg_bs4/" target="_blank">ddg_bs4</a> DuckDuckGo検索とbeautifulsoup4(URLからテキストを抽出)</li>
+      <li><a href="https://huggingface.co/spaces/aka7774/pke_ja/" target="_blank">pke_ja</a> 日本語の文章からキーワードを抽出する。faissの精度向上などに。</li>
+      <li><a href="https://huggingface.co/spaces/aka7774/pke_en/" target="_blank">pke_en</a> 英語の文章からキーワードを抽出する。Danbooruタグのかわりに。</li>
+    </ul>
+    <h2>github</h2>
+	<p><a href="https://github.com/aka7774" target="_blank">https://github.com/aka7774</a></p>
+	<p>勝手ながらAPIの仕様は自分の都合に合わせてコロコロ変えると思います。</p>
+    <ul>
+      <li><a href="https://github.com/aka7774/OneGAI/" target="_blank">OneGAI</a> 上記のスペースや巷で流行ってるアプリをインストールして管理する統合ツール。生成AIオールインワン。</li>
+      <li><a href="https://github.com/aka7774/akachat/" target="_blank">akachat</a> 上記の llm や faiss などを組み合わせて使うと人工知能チャットが楽しめるツールになる予定。</li>
+	  <li>あかちゃんインストーラーはnugetが死んだためたぶん動かなくなりました。別バージョン用意できるけどもう要らんっしょ？</li>
+	  <li>sd_katanukiは使うのやめてLayerDiffusionに移行するのがおすすめ。</li>
+	  <li>sd_infotextは他Extensionの設定を流用して生成することが出来なくて萎えて更新停止。</li>
+	  <li>あとのExtensionも今は自分で使ってないので引き継いでくれる人募集中。</li>
+    </ul>
+    <hr />
+     <h2>あかちゃんについて</h2>
+    <ul>
+      <li>名前の由来は服が赤いこと！　これでも大人なんだぜ！</li>
+      <li>aka7774は昔のDiscordに勝手につけられた数字だよ！ 名無しさんっぽくていいでしょ！</li>
+      <li><a href="https://marshmallow-qa.com/aka7774" target="_blank">マシュマロ</a> 反AI禁止。</li>
+    </ul>
+  </body>
+</html>
