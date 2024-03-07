@@ -69,10 +69,9 @@ async def api_sample(args: dict):
     return {}
 </pre>
     <ul>
-      <li>main.py は FastAPI</li>
-      <li>たとえば venv/bin/python -m uvicorn main:app で起動する</li>
+      <li>FastAPIを実装する。たとえば venv/bin/python -m uvicorn main:app で起動する</li>
       <li>CORSは一旦開けといてもらえると助かる(必要に応じて閉じる)</li>
-      <li>app.py に /gradio でアクセスできるようにしてサーバの起動は1個で済むようにする</li>
+      <li>/gradio で app にアクセスできるようにして、サーバの起動は1個で済むようにする</li>
       <li>app.py 同様、モデルは事前ロードする(VRAMを別々に食わなくて済む)</li>
       <li>APIの体裁は、Form Upload→binaryのパターンと、base64のjsonで読み書きするパターンの両方あればすごく親切・・・</li>
     </ul>
