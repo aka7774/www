@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <title>KISS - あか(aka7774)のホームページ</title>
+  </head>
+  <body>
+    <h1>🤗pyにKISSして🤗</h1>
+    <p>あか(aka7774)によるAI関連のpython成果物に対する提言です！</p>
+    <p>KISSの原則 (*´з`)</p>
+    <hr />
+    <h2>問題意識</h2>
+    <ul>
+      <li>AIエンジニアのコードに再利用性が無さすぎて、ユーザー全員がWebAPIやWebUIを再実装している(俯瞰して見ると車輪の再発明工場になってて、まさにstupid!)</li>
+      <li>たまに気合入れて大げさなWebAPIサーバを実装している例があるけど、そういうのは頑張っても動作しないので存在価値が無い(お前のことだぞ、Llava!)</li>
+      <li>gradioで凝ったWebUIを無理やりつくると負の遺産になってしまう(私のgithubにはautomatic1111用のExtensionが死屍累々としている)</li>
+      <li>という現状を負担感なく改善していきたいよね</li>
+    </ul>
+    <h2>あるべき姿</h2>
+    <ul>
+      <li>コマンドラインでもWebAPIでもWebUIでもimportでも同じ処理が動く状態がベスト</li>
+      <li>この中で一個だけ作るとしたらWebAPIにして欲しい。最悪 /docs でWebブラウザからでも実行できるから。</li>
+      <li>コマンドラインオプションが何十個もあるよりは用途別にコマンドが分かれてたほうがコード読む側としてはマシ</li>
+      <li>gradioのコードは最小限にして、UIの記述とfnの中身はファイルを分けて、fnの中身だけをimportする</li>
+    </ul>
+    <h2>実装テンプレート</h2>
+    <h3>app.py</h3>
+	<pre>
+import fn
+import gradio as gr
+
+fn.load_model()
+
+with gr.Blocks() as demo:
+    # UI here
+
+if __name__ == '__main__':
+    demo.launch()
+</pre>
+    <ul>
+      <li>gradioを実装する</li>
+      <li>実行とモデルのロードを切り分けて、実行時間を短縮する</li>
+      <li>FastAPIでマウントするために、import app出来るよう、勝手にlaunch()しないようにする</li>
+      <li>複数のタブを使うような複雑なUIにする時は、タブごとにファイルを分けると見通しが良くなる</li>
+    </ul>
+    <h3>main.py</h3>
+<pre>
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+import fn
+import gradio as gr
+from app import demo
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+gr.mount_gradio_app(app, demo, path="/gradio")
+
+fn.load_model()
+
+@app.post("/sample")
+async def api_sample(args: dict):
+    return {}
+</pre>
+    <ul>
+      <li>main.py は FastAPI</li>
+      <li>たとえば venv/bin/python -m uvicorn main:app で起動する</li>
+      <li>CORSは一旦開けといてもらえると助かる(必要に応じて閉じる)</li>
+      <li>app.py に /gradio でアクセスできるようにしてサーバの起動は1個で済むようにする</li>
+      <li>app.py 同様、モデルは事前ロードする(VRAMを別々に食わなくて済む)</li>
+      <li>APIの体裁は、Form Upload→binaryのパターンと、base64のjsonで読み書きするパターンの両方あればすごく親切・・・</li>
+    </ul>
+    <h3>fn.py</h3>
+<pre>
+def load_model():
+  pass
+
+def run():
+  pass
+</pre>
+    <ul>
+      <li>load_model() を作っておく。モデルのロードが無い場合も、何もしない関数を残しておくといいかも。</li>
+      <li>具体的な処理はこのファイル内に書いて、app.pyやmain.pyには書かない。</li>
+      <li>ファイル名は好きにしていいと思う。私はgradioの呼び方に従った。</li>
+    </ul>
+    <h3>venv.sh</h3>
+<pre>
+#!/usr/bin/bash
+
+python3 -m venv venv
+curl -kL https://bootstrap.pypa.io/get-pip.py | venv/bin/python
+
+venv/bin/python -m pip install gradio
+venv/bin/python -m pip install -r requirements.txt
+</pre>
+    <ul>
+      <li>ここまでの手順で作った物は Huggingface Spaces で動かせるので、Online Demoにすると良い。</li>
+      <li>CPUとGPUの切り分けが必要な時、それだけのためにtorchをimportしないように気を付ける。</li>
+      <li>bash venv.sh とすると、Space が自動で行うセットアップ処理と同じことをしたいという狙い。</li>
+      <li>(condaしか導入手順が無いリポジトリは勘弁して欲しい・・・)</li>
+    </ul>
+    <h3>requirements.txt</h3>
+<pre>
+fastapi
+uvicorn
+</pre>
+    <ul>
+      <li>gradioはvenv.shで導入する(バージョンを固定する時もそっちに書く)</li>
+    </ul>
+    <h3>README.md</h3>
+<pre>
+sdk: gradio
+sdk_version: 4.20.0
+app_file: app.py
+</pre>
+    <ul>
+      <li>Huggingface Spaces のテンプレートに従う。(gradioのバージョンはここで指定する)</li>
+    </ul>
+    <hr />
+    <p><a href="/">ホーム</p>
+  </body>
+</html>
